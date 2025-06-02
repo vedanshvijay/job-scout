@@ -123,11 +123,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Thanks to all job portals for providing public job listings
 - Inspired by the need for better job search tools in India
 - Built with modern web technologies for optimal performance
-
-## 📊 Demo
-
-Visit the live demo: [JobScout Live](https://your-demo-url.com) *(Update with your deployment URL)*
-
 ---
 
 ⭐ **Star this repository if you find it helpful!** 
