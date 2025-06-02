@@ -1,0 +1,472 @@
+{% extends "base.html" %}
+
+{% block title %}JobScout - Find Your Dream Job{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Ensure buttons are clickable */
+.hero-section button,
+.hero-section a {
+    position: relative;
+    z-index: 10 !important;
+    pointer-events: auto !important;
+}
+
+.hero-section .btn {
+    cursor: pointer !important;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 text-center fade-in">
+                <h1 class="display-3 fw-bold mb-4">Find Your Dream Job with JobScout</h1>
+                <p class="lead mb-4 fs-5">The intelligent job search platform that aggregates opportunities from multiple Indian job portals. Search across Indeed, TimesJobs, and Naukri with a single click and discover your next career move.</p>
+                
+                <!-- Key Benefits -->
+                <div class="row g-4 mb-5">
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-search fa-3x text-primary mb-3"></i>
+                            <h5>Unified Search</h5>
+                            <p class="text-muted">Search multiple job portals simultaneously</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-bolt fa-3x text-primary mb-3"></i>
+                            <h5>Real-time Results</h5>
+                            <p class="text-muted">Get fresh job listings as they're posted</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-filter fa-3x text-primary mb-3"></i>
+                            <h5>Smart Filtering</h5>
+                            <p class="text-muted">AI-powered relevance scoring and filtering</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex gap-3 justify-content-center">
+                    <button onclick="scrollToSearch()" class="btn btn-primary btn-lg px-4" style="z-index: 10; position: relative;">
+                        <i class="fas fa-search me-2"></i>Start Searching
+                    </button>
+                    <a href="/about" class="btn btn-outline-dark btn-lg px-4" style="z-index: 10; position: relative;">
+                        <i class="fas fa-info-circle me-2"></i>Learn More
+                    </a>
+                </div>
+                
+                <!-- Alternative buttons as fallback -->
+                <div class="mt-3">
+                    <small class="text-muted">
+                        Alternative links: 
+                        <a href="#search-section" class="text-decoration-none">Go to Search</a> | 
+                        <a href="/about" class="text-decoration-none">About Page</a>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="fw-bold">Why Choose JobScout?</h2>
+                <p class="lead text-muted">Streamline your job search with our powerful features</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-globe fa-2x text-primary mb-3"></i>
+                        <h6 class="fw-bold">Multi-Portal Search</h6>
+                        <p class="text-muted small">Access jobs from Indeed, TimesJobs, and Naukri in one place</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-clock fa-2x text-primary mb-3"></i>
+                        <h6 class="fw-bold">Time Saving</h6>
+                        <p class="text-muted small">No need to visit multiple websites - search everything at once</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-star fa-2x text-primary mb-3"></i>
+                        <h6 class="fw-bold">Quality Results</h6>
+                        <p class="text-muted small">Smart filtering ensures you see the most relevant opportunities</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-mobile-alt fa-2x text-primary mb-3"></i>
+                        <h6 class="fw-bold">Mobile Friendly</h6>
+                        <p class="text-muted small">Search for jobs on any device, anywhere, anytime</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Search Section -->
+<section id="search-section" class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold">Start Your Job Search</h2>
+                    <p class="text-muted">Enter your desired job title and location to find opportunities</p>
+                </div>
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
+                        <form id="searchForm">
+                            <div class="row g-3">
+                                <div class="col-md-5">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="query" name="query" placeholder="Job title or keywords" required>
+                                        <label for="query"><i class="fas fa-briefcase me-2"></i>Job title or keywords</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="location" name="location" placeholder="Location" required>
+                                        <label for="location"><i class="fas fa-map-marker-alt me-2"></i>Location</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-primary w-100 h-100">
+                                        <i class="fas fa-search"></i>
+                                        <span class="d-none d-md-inline ms-1">Search</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <!-- Search Tips -->
+                        <div class="mt-3">
+                            <small class="text-muted">
+                                <i class="fas fa-lightbulb me-1"></i>
+                                <strong>Tips:</strong> Try "Python Developer", "Data Scientist", "Marketing Manager" or "Software Engineer"
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Results Section -->
+<section id="results" class="py-5 bg-light">
+    <div class="container">
+        <div id="loading" class="text-center d-none">
+            <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3 text-muted">Searching across multiple job portals...</p>
+        </div>
+        <div id="error-message" class="alert alert-danger d-none" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <span></span>
+        </div>
+        <div id="success-message" class="alert alert-success d-none" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            <span></span>
+        </div>
+        <div id="job-results" class="row g-4"></div>
+        <div id="load-more" class="text-center mt-4 d-none">
+            <button class="btn btn-outline-primary btn-lg" onclick="loadMore()">
+                <i class="fas fa-plus me-2"></i>Load More Jobs
+            </button>
+        </div>
+        <div id="no-results" class="text-center d-none">
+            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+            <h4 class="text-muted">No jobs found</h4>
+            <p class="text-muted">Try adjusting your search terms or location</p>
+        </div>
+    </div>
+</section>
+
+<!-- Job Card Template -->
+<template id="job-card-template">
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="card-title job-title mb-0"></h5>
+                    <span class="badge bg-primary source-badge"></span>
+                </div>
+                <h6 class="card-subtitle mb-2 text-primary company-name"></h6>
+                <p class="card-text location mb-1"></p>
+                <p class="card-text salary mb-1"></p>
+                <p class="card-text experience mb-2"></p>
+                <p class="card-text description text-muted small"></p>
+                <div class="skills mb-3"></div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted posted-date"></small>
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-sm btn-outline-primary apply-link" target="_blank">
+                            <i class="fas fa-external-link-alt me-1"></i>Apply
+                        </a>
+                        <button class="btn btn-sm btn-outline-secondary save-job">
+                            <i class="fas fa-bookmark me-1"></i>Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let currentPage = 1;
+let isLoading = false;
+let currentQuery = '';
+let currentLocation = '';
+
+// Smooth scroll to search section
+function scrollToSearch() {
+    console.log('scrollToSearch function called');
+    const searchSection = document.getElementById('search-section');
+    console.log('Search section found:', searchSection);
+    
+    if (searchSection) {
+        searchSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+        // Focus on the first input after scrolling
+        setTimeout(() => {
+            const queryInput = document.getElementById('query');
+            if (queryInput) {
+                queryInput.focus();
+                console.log('Query input focused');
+            }
+        }, 500);
+    } else {
+        console.error('Search section not found');
+        // Fallback: scroll to a specific position
+        window.scrollTo({
+            top: 800,
+            behavior: 'smooth'
+        });
+    }
+}
+
+// Make function globally available
+window.scrollToSearch = scrollToSearch;
+
+document.getElementById('searchForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    currentPage = 1;
+    currentQuery = document.getElementById('query').value.trim();
+    currentLocation = document.getElementById('location').value.trim();
+    await performSearch();
+});
+
+async function performSearch() {
+    if (isLoading) return;
+    isLoading = true;
+
+    const loading = document.getElementById('loading');
+    const errorMessage = document.getElementById('error-message');
+    const successMessage = document.getElementById('success-message');
+    const jobResults = document.getElementById('job-results');
+    const loadMore = document.getElementById('load-more');
+    const noResults = document.getElementById('no-results');
+
+    loading.classList.remove('d-none');
+    errorMessage.classList.add('d-none');
+    successMessage.classList.add('d-none');
+    noResults.classList.add('d-none');
+    
+    if (currentPage === 1) {
+        jobResults.innerHTML = '';
+    }
+
+    try {
+        const response = await fetch('/search', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                query: currentQuery,
+                location: currentLocation,
+                start: (currentPage - 1) * 10,
+                num_results: 10
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+            errorMessage.querySelector('span').textContent = data.error;
+            errorMessage.classList.remove('d-none');
+            loadMore.classList.add('d-none');
+        } else {
+            if (data.jobs && data.jobs.length > 0) {
+                displayJobs(data.jobs);
+                loadMore.classList.toggle('d-none', !data.has_more);
+                if (currentPage === 1) {
+                    successMessage.querySelector('span').textContent = `Found ${data.total} job${data.total !== 1 ? 's' : ''}!`;
+                    successMessage.classList.remove('d-none');
+                }
+            } else {
+                if (currentPage === 1) {
+                    noResults.classList.remove('d-none');
+                }
+                loadMore.classList.add('d-none');
+            }
+        }
+    } catch (error) {
+        console.error('Search error:', error);
+        errorMessage.querySelector('span').textContent = 'An error occurred while searching. Please try again.';
+        errorMessage.classList.remove('d-none');
+        loadMore.classList.add('d-none');
+    } finally {
+        loading.classList.add('d-none');
+        isLoading = false;
+    }
+}
+
+function displayJobs(jobs) {
+    const template = document.getElementById('job-card-template');
+    const jobResults = document.getElementById('job-results');
+
+    jobs.forEach(job => {
+        const clone = template.content.cloneNode(true);
+        
+        clone.querySelector('.job-title').textContent = job.title || 'No title';
+        clone.querySelector('.company-name').textContent = job.company || 'No company';
+        clone.querySelector('.location').innerHTML = `<i class="fas fa-map-marker-alt me-1"></i>${job.location || 'No location'}`;
+        clone.querySelector('.salary').innerHTML = job.salary ? `<i class="fas fa-rupee-sign me-1"></i>${job.salary}` : '<i class="fas fa-rupee-sign me-1"></i>Not disclosed';
+        clone.querySelector('.experience').innerHTML = job.experience ? `<i class="fas fa-clock me-1"></i>${job.experience}` : '<i class="fas fa-clock me-1"></i>Not specified';
+        clone.querySelector('.description').textContent = job.description || 'No description available';
+        clone.querySelector('.posted-date').innerHTML = `<i class="fas fa-calendar me-1"></i>Posted: ${job.posted || 'Recently'}`;
+        clone.querySelector('.source-badge').textContent = job.source || 'Unknown';
+        
+        // Set apply link
+        const applyLink = clone.querySelector('.apply-link');
+        if (job.links && job.links.website) {
+            applyLink.href = job.links.website;
+        } else {
+            applyLink.href = '#';
+            applyLink.onclick = function(e) {
+                e.preventDefault();
+                alert('Apply link not available for this job.');
+            };
+        }
+
+        const skillsContainer = clone.querySelector('.skills');
+        if (job.skills && job.skills.length > 0) {
+            job.skills.forEach(skill => {
+                const badge = document.createElement('span');
+                badge.className = 'badge bg-light text-dark me-1 mb-1';
+                badge.textContent = skill;
+                skillsContainer.appendChild(badge);
+            });
+        }
+
+        jobResults.appendChild(clone);
+    });
+}
+
+function loadMore() {
+    currentPage++;
+    performSearch();
+}
+
+// Save job functionality
+document.addEventListener('click', async function(e) {
+    if (e.target.classList.contains('save-job') || e.target.closest('.save-job')) {
+        const button = e.target.classList.contains('save-job') ? e.target : e.target.closest('.save-job');
+        const card = button.closest('.card');
+        const jobTitle = card.querySelector('.job-title').textContent;
+        const company = card.querySelector('.company-name').textContent;
+        
+        // Simple save functionality - just update button
+        button.innerHTML = '<i class="fas fa-check me-1"></i>Saved';
+        button.disabled = true;
+        button.classList.remove('btn-outline-secondary');
+        button.classList.add('btn-success');
+        
+        // Show toast notification
+        if (window.showToast) {
+            window.showToast('Job saved successfully!', 'success');
+        }
+    }
+});
+
+// Initialize smooth scrolling when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Content Loaded');
+    
+    // Add backup click handlers for buttons
+    const startSearchingBtn = document.querySelector('button[onclick="scrollToSearch()"]');
+    const learnMoreBtn = document.querySelector('a[href="/about"]');
+    
+    console.log('Start Searching button found:', startSearchingBtn);
+    console.log('Learn More button found:', learnMoreBtn);
+    
+    if (startSearchingBtn) {
+        startSearchingBtn.addEventListener('click', function(e) {
+            console.log('Start Searching button clicked via event listener');
+            e.preventDefault();
+            scrollToSearch();
+        });
+    }
+    
+    if (learnMoreBtn) {
+        learnMoreBtn.addEventListener('click', function(e) {
+            console.log('Learn More button clicked');
+            // Let the default behavior happen (navigate to /about)
+        });
+    }
+    
+    // Add smooth scrolling to all anchor links
+    const links = document.querySelectorAll('a[href^="#"]');
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+    
+    // Test if buttons are clickable
+    setTimeout(() => {
+        console.log('Testing button clickability...');
+        const testBtn = document.querySelector('.btn-primary');
+        if (testBtn) {
+            const rect = testBtn.getBoundingClientRect();
+            console.log('Button position:', rect);
+            console.log('Button styles:', window.getComputedStyle(testBtn));
+        }
+    }, 1000);
+});
+</script>
+{% endblock %}

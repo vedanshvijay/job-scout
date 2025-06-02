@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}JobScout{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-black: #1a1a1a;
+            --secondary-grey: #4a4a4a;
+            --light-grey: #f5f5f5;
+            --white: #ffffff;
+            --transition: all 0.3s ease;
+            --error-red: #dc3545;
+            --success-green: #28a745;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--primary-black);
+            line-height: 1.6;
+            padding-top: 76px; /* Account for fixed navbar */
+        }
+
+        /* Header Styles */
+        .navbar {
+            background-color: var(--white);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-black);
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--secondary-grey);
+            font-weight: 500;
+            transition: var(--transition);
+            margin: 0 0.5rem;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-black);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary-black);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background-color: var(--light-grey);
+            padding: 6rem 0;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 100%);
+            z-index: 0;
+        }
+
+        .hero-section .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background-color: var(--primary-black);
+            border-color: var(--primary-black);
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            z-index: 3;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-grey);
+            border-color: var(--secondary-grey);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-dark {
+            position: relative;
+            z-index: 3;
+        }
+
+        /* Cards */
+        .card {
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: var(--transition);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Error Messages */
+        .error-message {
+            background-color: var(--error-red);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .success-message {
+            background-color: var(--success-green);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-black);
+            color: var(--white);
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        footer h5, footer h6 {
+            color: var(--white);
+        }
+
+        footer .social-links a {
+            color: var(--white);
+            margin: 0 0.5rem;
+            font-size: 1.5rem;
+            transition: var(--transition);
+            display: inline-block;
+            padding: 0.5rem;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        footer .social-links a:hover {
+            color: var(--white);
+            background-color: rgba(255,255,255,0.2);
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        footer a {
+            color: var(--white);
+            transition: var(--transition);
+            position: relative;
+            padding: 0.25rem 0;
+        }
+
+        footer a:hover {
+            color: var(--light-grey);
+            text-decoration: none;
+            transform: translateX(5px);
+        }
+
+        footer a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--light-grey);
+            transition: var(--transition);
+        }
+
+        footer a:hover::after {
+            width: 100%;
+        }
+
+        footer ul li {
+            transition: var(--transition);
+        }
+
+        footer ul li:hover {
+            transform: translateX(5px);
+        }
+
+        /* Footer Legal Links */
+        .footer-legal-link {
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .footer-legal-link:hover {
+            background-color: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Modal Styling */
+        .modal-content {
+            border-radius: 12px;
+            border: none;
+        }
+
+        .modal-header {
+            background-color: var(--primary-black);
+            color: var(--white);
+            border-bottom: none;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .modal-body {
+            padding: 2rem;
+            line-height: 1.8;
+        }
+
+        .modal-footer {
+            border-top: 1px solid rgba(0,0,0,0.1);
+            border-radius: 0 0 12px 12px;
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .toast {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-bottom: 1rem;
+            min-width: 300px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 4rem 0;
+            }
+            
+            .navbar {
+                padding: 0.5rem 0;
+            }
+
+            .toast-container {
+                left: 20px;
+                right: 20px;
+            }
+
+            .toast {
+                min-width: auto;
+            }
+
+            /* Mobile Footer Improvements */
+            footer {
+                padding: 3rem 0 1.5rem;
+            }
+
+            footer .col-6 {
+                margin-bottom: 2rem;
+            }
+
+            footer .social-links {
+                text-align: center;
+                margin-top: 1rem;
+            }
+
+            footer .social-links a {
+                margin: 0 0.75rem;
+                font-size: 1.25rem;
+            }
+
+            footer h5, footer h6 {
+                text-align: center;
+                margin-bottom: 1rem;
+            }
+
+            footer ul {
+                text-align: center;
+            }
+
+            footer .row.align-items-center {
+                text-align: center;
+            }
+
+            footer .row.align-items-center .col-md-4 {
+                margin-top: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            footer .col-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+                margin-bottom: 2rem;
+            }
+
+            footer .social-links a {
+                margin: 0 0.5rem;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Toast Container -->
+    <div class="toast-container"></div>
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">JobScout</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/tech-stack">Tech Stack</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row g-4">
+                <!-- Company Info -->
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="fw-bold mb-3">JobScout</h5>
+                    <p class="mb-3">Your intelligent job search companion that aggregates opportunities from multiple job portals across India.</p>
+                    <div class="social-links">
+                        <a href="https://github.com/vedanshvijay" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/vedansh-vijayvargia-41a64421b" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="mailto:ved02vijay@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6 class="fw-bold mb-3">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="/" class="text-light text-decoration-none">Home</a></li>
+                        <li class="mb-2"><a href="/about" class="text-light text-decoration-none">About</a></li>
+                        <li class="mb-2"><a href="/tech-stack" class="text-light text-decoration-none">Tech Stack</a></li>
+                        <li class="mb-2"><a href="#search-section" class="text-light text-decoration-none">Search Jobs</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Job Portals -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6 class="fw-bold mb-3">Job Portals</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="https://indeed.co.in" target="_blank" class="text-light text-decoration-none">Indeed</a></li>
+                        <li class="mb-2"><a href="https://timesjobs.com" target="_blank" class="text-light text-decoration-none">TimesJobs</a></li>
+                        <li class="mb-2"><a href="https://naukri.com" target="_blank" class="text-light text-decoration-none">Naukri</a></li>
+                        <li class="mb-2"><span class="text-muted">More coming soon...</span></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact & Support -->
+                <div class="col-lg-4 col-md-6">
+                    <h6 class="fw-bold mb-3">Contact & Support</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-envelope me-2"></i>
+                            <a href="mailto:ved02vijay@gmail.com" class="text-light text-decoration-none">Contact us for support</a>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            <span class="text-light">India</span>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-clock me-2"></i>
+                            <span class="text-light">24/7 Job Search</span>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-question-circle me-2"></i>
+                            <a href="mailto:ved02vijay@gmail.com?subject=JobScout Help Request" class="text-light text-decoration-none">Help & FAQ</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="mt-4 mb-4" style="border-color: rgba(255,255,255,0.2);">
+            
+            <!-- Bottom Footer -->
+            <div class="row align-items-center">
+                <div class="col-md-8 col-12 text-center text-md-start mb-2 mb-md-0">
+                    <p class="mb-0">&copy; {{ current_year }} JobScout. All rights reserved.</p>
+                </div>
+                <div class="col-md-4 col-12 text-center text-md-end">
+                    <span class="footer-legal-link text-light text-decoration-none small" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</span>
+                </div>
+            </div>
+            
+            <!-- Additional Info -->
+            <div class="row mt-3">
+                <div class="col-12 text-center">
+                    <small class="text-light">
+                        <i class="fas fa-heart text-danger me-1"></i>
+                        Made with passion for job seekers across India
+                        <i class="fas fa-heart text-danger ms-1"></i>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Privacy Policy Modal -->
+    <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="privacyModalLabel">
+                        <i class="fas fa-shield-alt me-2"></i>Privacy Policy
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 class="fw-bold mb-3">Information We Collect</h6>
+                    <p>JobScout is a job search aggregation tool that helps you find opportunities across multiple job portals:</p>
+                    <ul>
+                        <li>We collect search queries to provide relevant job results</li>
+                        <li>Basic usage analytics to improve the search experience</li>
+                        <li>No personal information is stored permanently</li>
+                        <li>No user accounts or registration required</li>
+                    </ul>
+
+                    <h6 class="fw-bold mb-3 mt-4">How We Use Your Information</h6>
+                    <p>The information is used solely to:</p>
+                    <ul>
+                        <li>Provide relevant job search results from multiple portals</li>
+                        <li>Improve search algorithms and user experience</li>
+                        <li>Monitor system performance and reliability</li>
+                    </ul>
+
+                    <h6 class="fw-bold mb-3 mt-4">Data Security</h6>
+                    <p>We implement basic security measures to protect your search queries. Since no personal data is stored, your privacy is maintained by design.</p>
+
+                    <h6 class="fw-bold mb-3 mt-4">Third-Party Services</h6>
+                    <p>JobScout aggregates publicly available job listings from job portals like Indeed, TimesJobs, and Naukri. We do not share any information with these services.</p>
+
+                    <h6 class="fw-bold mb-3 mt-4">Contact</h6>
+                    <p>For any questions about privacy or the service, you can reach out through the contact information provided on the website.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script>
+        // Toast notification function
+        function showToast(message, type = 'success') {
+            const toastContainer = document.querySelector('.toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <div class="toast-body">
+                    ${message}
+                </div>
+            `;
+            toastContainer.appendChild(toast);
+            
+            // Remove toast after 3 seconds
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Error handling
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            showToast('An error occurred. Please try again.', 'error');
+            return false;
+        };
+
+        // Loading state management
+        function showLoading() {
+            const loading = document.querySelector('.loading-spinner');
+            if (loading) loading.style.display = 'block';
+        }
+
+        function hideLoading() {
+            const loading = document.querySelector('.loading-spinner');
+            if (loading) loading.style.display = 'none';
+        }
+
+        // Form validation
+        document.addEventListener('DOMContentLoaded', function() {
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    if (!form.checkValidity()) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        showToast('Please fill in all required fields.', 'error');
+                    }
+                    form.classList.add('was-validated');
+                });
+            });
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html> 
